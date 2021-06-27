@@ -36,7 +36,7 @@ def build_siamese_model(inputShape, dropout_rate,embeddingDim=48,suffix=''):
     flatten_name = 'flatten' + str(suffix)
 
     x = model.output
-    return x#, model.input
+    return x, model.input
 """
     x = Flatten(name=flatten_name)(x)
     x = Dense(1024, activation='relu')(x)
