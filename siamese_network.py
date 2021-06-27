@@ -21,7 +21,8 @@ def build_siamese_model(inputShape,embeddingDim=48):
 	model = Model(inputs, outputs)
 	# return the model to the calling function
 	return model
-    """
+
+"""
     I1 = Input(inputShape)
     model = ResNet50(include_top=False, weights='imagenet', input_tensor=I1, pooling=None)
     model.layers.pop()
