@@ -44,9 +44,9 @@ test_datagen = Generator(testX, testX, config.BATCH_SIZE)
 
 print("[INFO] training model...")
 history = model.fit_generator(train_datagen,
-    steps_per_epoch=len(trainX), #batch_size,
+    steps_per_epoch=len(trainX)//config.BATCH_SIZE,
     validation_data=test_datagen,
-    validation_steps=len(testX), #batch_size,
+    validation_steps=len(testX)//config.BATCH_SIZE, #batch_size,
     epochs=config.EPOCHS)
 
 #history = model.fit([pairTrain[:, 0], pairTrain[:, 1]], labelTrain[:],validation_data=([pairTest[:, 0], pairTest[:, 1]], labelTest[:]),
