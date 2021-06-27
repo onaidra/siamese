@@ -38,8 +38,14 @@ print("[INFO] compiling model...")
 model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
 # train the model
 print("[INFO] training model...")
-history = model.fit([pairTrain[:, 0], pairTrain[:, 1]], labelTrain[:],validation_data=([pairTest[:, 0], pairTest[:, 1]], labelTest[:]),
-	batch_size=config.BATCH_SIZE,epochs=config.EPOCHS)
+#history = model.fit([pairTrain[:, 0], pairTrain[:, 1]], labelTrain[:],validation_data=([pairTest[:, 0], pairTest[:, 1]], labelTest[:]),
+#	batch_size=config.BATCH_SIZE,epochs=config.EPOCHS)
+history = model.fit_generator((trainX,trainY,config.BATCH_SIZE),
+                            steps_per_epoch=len(trainX),
+                            epochs=10,
+                            verbose=1,
+                            #callbacks=[checkpoint, tensor_board_callback, lr_reducer, early_stopper, csv_logger],
+                            validation_data=(testX,testY))
 
 # serialize the model to disk
 print("[INFO] saving siamese model...")
