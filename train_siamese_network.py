@@ -33,7 +33,7 @@ distance = Lambda(utils.euclidean_distance)([featsA, featsB])
 outputs = Dense(1, activation="sigmoid")(distance)
 pred = Dropout(0.2)(outputs)
 model = Model(inputs=[inputA, inputB], outputs=pred)
-print(labelTest[:])
+print(labelTest[:].shape)
 print("[INFO] compiling model...")
 model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
 # train the model
