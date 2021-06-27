@@ -33,7 +33,7 @@ featsB = featureExtractor(imgB)
 distance = Lambda(utils.euclidean_distance)([featsA, featsB])
 outputs = Dense(1, activation="sigmoid")(distance)
 pred = Dropout(0.2)(outputs)
-model = Model(inputs=[featsA, featsB], outputs=pred)
+model = Model(inputs=[imgA, imgB], outputs=pred)
 
 print("[INFO] compiling model...")
 model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
