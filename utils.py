@@ -2,7 +2,7 @@
 import tensorflow.keras.backend as K
 import matplotlib.pyplot as plt
 import numpy as np
-from keras.utils import Sequence
+from tensorflow.keras.utils import Sequence
 import math
 
 def make_pairs(images, labels):
