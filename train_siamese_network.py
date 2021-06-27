@@ -24,8 +24,8 @@ print("[INFO] building siamese network...")
 imgA = Input(shape=config.IMG_SHAPE)
 imgB = Input(shape=config.IMG_SHAPE)
 #featureExtractor = build_siamese_model(config.IMG_SHAPE,dropout_rate=0.2)
-featsA = build_siamese_model(imgA,dropout_rate=0.2)
-featsB = build_siamese_model(imgB,dropout_rate=0.2,suffix='_2')
+featsA = build_siamese_model(config.IMG_SHAPE,dropout_rate=0.2)
+featsB = build_siamese_model(config.IMG_SHAPE,dropout_rate=0.2,suffix='_2')
 
 # finally, construct the siamese network
 distance = Lambda(utils.euclidean_distance)([featsA, featsB])
