@@ -1,7 +1,7 @@
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input,Conv2D,Dense,Dropout,GlobalAveragePooling2D,MaxPooling2D,Flatten
 from tensorflow.keras.applications.resnet50 import ResNet50
-def build_siamese_model(inputShape,suffix='', dropout_rate,embeddingDim=48):
+def build_siamese_model(inputShape, dropout_rate,embeddingDim=48,suffix=''):
     """
 	# specify the inputs for the feature extractor network
 	inputs = Input(inputShape)
