@@ -1,7 +1,8 @@
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input,Conv2D,Dense,Dropout,GlobalAveragePooling2D,MaxPooling2D
-
-def build_siamese_model(inputShape, embeddingDim=48):
+from tensorflow.keras.layers import Input,Conv2D,Dense,Dropout,GlobalAveragePooling2D,MaxPooling2D,Flatten
+from tensorflow.keras.applications.resnet50 import ResNet50
+def build_siamese_model(inputShape, ,suffix, dropout_rate,embeddingDim=48):
+    """
 	# specify the inputs for the feature extractor network
 	inputs = Input(inputShape)
 	# define the first set of CONV => RELU => POOL => DROPOUT layers
@@ -20,3 +21,24 @@ def build_siamese_model(inputShape, embeddingDim=48):
 	model = Model(inputs, outputs)
 	# return the model to the calling function
 	return model
+    """
+    I1 = Input(inputShape)
+    model = ResNet50(include_top=False, weights='imagenet', input_tensor=I1, pooling=None)
+    model.layers.pop()
+    model.outputs = [model.layers[-1].output]
+    model.layers[-1].outbound_nodes = []
+
+    for layer in model.layers:
+        layer.name = layer.name + str(suffix)
+        layer.trainable = False
+
+    flatten_name = 'flatten' + str(suffix)
+
+    x = model.output
+    x = Flatten(name=flatten_name)(x)
+    x = Dense(1024, activation='relu')(x)
+    x = Dropout(dropout_rate)(x)
+    x = Dense(512, activation='relu')(x)
+    x = Dropout(dropout_rate)(x)
+
+    return x#, model.input
