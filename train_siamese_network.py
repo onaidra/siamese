@@ -1,6 +1,7 @@
 # import the necessary packages
 from tensorflow.python.keras.layers.core import Dropout
 from siamese_network import build_siamese_model
+from utils import Generator
 import config
 import utils
 from tensorflow.keras.models import Model
@@ -37,15 +38,20 @@ print(labelTest[:].shape)
 print("[INFO] compiling model...")
 model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
 # train the model
+
+train_datagen = Generator(trainX, trainX, config.BATCH_SIZE)
+test_datagen = Generator(testX, testX, config.BATCH_SIZE)
+
 print("[INFO] training model...")
+history = model.fit_generator(train_datagen,
+    steps_per_epoch=len(trainX), #batch_size,
+    validation_data=test_datagen,
+    validation_steps=len(testX), #batch_size,
+    epochs=config.EPOCHS)
+
 #history = model.fit([pairTrain[:, 0], pairTrain[:, 1]], labelTrain[:],validation_data=([pairTest[:, 0], pairTest[:, 1]], labelTest[:]),
 #	batch_size=config.BATCH_SIZE,epochs=config.EPOCHS)
-history = model.fit_generator([pairTrain[:, 0], pairTrain[:, 1]],
-                            steps_per_epoch=len(trainX),
-                            epochs=10,
-                            verbose=1,
-                            #callbacks=[checkpoint, tensor_board_callback, lr_reducer, early_stopper, csv_logger],
-                            validation_data=(testX,testY))
+
 
 # serialize the model to disk
 print("[INFO] saving siamese model...")

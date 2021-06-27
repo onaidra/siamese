@@ -2,6 +2,8 @@
 import tensorflow.keras.backend as K
 import matplotlib.pyplot as plt
 import numpy as np
+from keras.utils import Sequence
+import math
 
 def make_pairs(images, labels):
 	# initialize two empty lists to hold the (image, image) pairs and
@@ -60,3 +62,22 @@ def plot_training(H, plotPath):
 	plt.ylabel("Loss/Accuracy")
 	plt.legend(loc="lower left")
 	plt.savefig(plotPath)
+
+class Generator(Sequence):
+    # Class is a dataset wrapper for better training performance
+    def __init__(self, x_set, y_set, batch_size=256):
+        self.x, self.y = x_set, y_set
+        self.batch_size = batch_size
+        self.indices = np.arange(self.x.shape[0])
+
+    def __len__(self):
+        return math.floor(self.x.shape[0] / self.batch_size)
+
+    def __getitem__(self, idx):
+        inds = self.indices[idx * self.batch_size:(idx + 1) * self.batch_size]
+        batch_x = self.x[inds]
+        batch_y = self.y[inds]
+        return batch_x, batch_y
+
+    def on_epoch_end(self):
+        np.random.shuffle(self.indices)
