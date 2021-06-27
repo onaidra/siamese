@@ -25,16 +25,16 @@ print("[INFO] preparing positive and negative pairs...")
 print("[INFO] building siamese network...")
 imgA = Input(shape=config.IMG_SHAPE)
 imgB = Input(shape=config.IMG_SHAPE)
-#featureExtractor = build_siamese_model(config.IMG_SHAPE,dropout_rate=0.2)
-featsA,inputA = build_siamese_model(config.IMG_SHAPE,dropout_rate=0.2)
-featsB,inputB = build_siamese_model(config.IMG_SHAPE,dropout_rate=0.2,suffix='_2')
+featureExtractor = build_siamese_model(config.IMG_SHAPE)
+featsA,inputA = featureExtractor(imgA)
+featsB,inputB = featureExtractor(imgB)
 
 # finally, construct the siamese network
 distance = Lambda(utils.euclidean_distance)([featsA, featsB])
 outputs = Dense(1, activation="sigmoid")(distance)
 pred = Dropout(0.2)(outputs)
 model = Model(inputs=[inputA, inputB], outputs=pred)
-print(labelTest[:].shape)
+
 print("[INFO] compiling model...")
 model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
 # train the model
