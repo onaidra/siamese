@@ -27,7 +27,7 @@ def build_siamese_model(inputShape, dropout_rate,embeddingDim=48,suffix=''):
     model = ResNet50(include_top=False, weights='imagenet', input_tensor=I1, pooling=max)
     model.layers.pop()
     model.outputs = [model.layers[-1].output]
-    model.layers[-1].outbound_nodes = []
+    #model.layers[-1].outbound_nodes = []
     print("------------------------------------------------------------------------------------------")
     for layer in model.layers:
         layer.name = layer.name + str(suffix)
