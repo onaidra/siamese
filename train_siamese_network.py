@@ -1,4 +1,5 @@
 # import the necessary packages
+from tensorflow.python.keras.layers.core import Dropout
 from siamese_network import build_siamese_model
 import config
 import utils
@@ -30,18 +31,15 @@ featsB,inputB = build_siamese_model(config.IMG_SHAPE,dropout_rate=0.2,suffix='_2
 # finally, construct the siamese network
 distance = Lambda(utils.euclidean_distance)([featsA, featsB])
 outputs = Dense(1, activation="sigmoid")(distance)
-model = Model(inputs=[inputA, inputB], outputs=outputs)
+pred = Dropout(0.2)(outputs)
+model = Model(inputs=[inputA, inputB], outputs=pred)
 
 print("[INFO] compiling model...")
-model.compile(loss="binary_crossentropy", optimizer="adam",
-	metrics=["accuracy"])
+model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
 # train the model
 print("[INFO] training model...")
-history = model.fit(
-	[pairTrain[:, 0], pairTrain[:, 1]], labelTrain[:],
-	validation_data=([pairTest[:, 0], pairTest[:, 1]], labelTest[:]),
-	batch_size=config.BATCH_SIZE, 
-	epochs=config.EPOCHS)
+history = model.fit([pairTrain[:, 0], pairTrain[:, 1]], labelTrain[:],validation_data=([pairTest[:, 0], pairTest[:, 1]], labelTest[:]),
+	batch_size=config.BATCH_SIZE,epochs=config.EPOCHS)
 
 # serialize the model to disk
 print("[INFO] saving siamese model...")
