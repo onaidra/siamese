@@ -1,16 +1,16 @@
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input,Conv2D,Dense,Dropout,GlobalAveragePooling2D,MaxPooling2D,Flatten
 from tensorflow.keras.applications.resnet50 import ResNet50
-def build_siamese_model(inputShape, dropout_rate,embeddingDim=48,suffix=''):
-    """
+def build_siamese_model(inputShape,embeddingDim=48):
+
 	# specify the inputs for the feature extractor network
 	inputs = Input(inputShape)
 	# define the first set of CONV => RELU => POOL => DROPOUT layers
-	x = Conv2D(64, (2, 2), padding="same", activation="relu")(inputs)
+	x = ResNet50(include_top=False, weights='imagenet', input_tensor=inputs, pooling=None)
 	x = MaxPooling2D(pool_size=(2, 2))(x)
 	x = Dropout(0.3)(x)
 	# second set of CONV => RELU => POOL => DROPOUT layers
-	x = Conv2D(64, (2, 2), padding="same", activation="relu")(x)
+	x = ResNet50(include_top=False, weights='imagenet', input_tensor=inputs, pooling=None)
 	x = MaxPooling2D(pool_size=2)(x)
 	x = Dropout(0.3)(x)
 
@@ -42,3 +42,4 @@ def build_siamese_model(inputShape, dropout_rate,embeddingDim=48,suffix=''):
     x = Dropout(dropout_rate)(x)
 
     return x#, model.input
+    """
