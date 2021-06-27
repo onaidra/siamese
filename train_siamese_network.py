@@ -40,7 +40,7 @@ model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"]
 print("[INFO] training model...")
 #history = model.fit([pairTrain[:, 0], pairTrain[:, 1]], labelTrain[:],validation_data=([pairTest[:, 0], pairTest[:, 1]], labelTest[:]),
 #	batch_size=config.BATCH_SIZE,epochs=config.EPOCHS)
-history = model.fit_generator((trainX,trainY,config.BATCH_SIZE),
+history = model.fit_generator([pairTrain[:, 0], pairTrain[:, 1]],
                             steps_per_epoch=len(trainX),
                             epochs=10,
                             verbose=1,
