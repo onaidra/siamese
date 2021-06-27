@@ -39,14 +39,14 @@ print("[INFO] compiling model...")
 model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
 # train the model
 
-train_datagen = Generator(trainX, trainX, config.BATCH_SIZE)
-test_datagen = Generator(testX, testX, config.BATCH_SIZE)
+train_datagen = Generator(trainX, trainY, config.BATCH_SIZE)
+test_datagen = Generator(testX, testY, config.BATCH_SIZE)
 
 print("[INFO] training model...")
 history = model.fit_generator(train_datagen,
     steps_per_epoch=len(trainX)//config.BATCH_SIZE,
     validation_data=test_datagen,
-    validation_steps=len(testX)//config.BATCH_SIZE, #batch_size,
+    validation_steps=len(testX)//config.BATCH_SIZE,
     epochs=config.EPOCHS)
 
 #history = model.fit([pairTrain[:, 0], pairTrain[:, 1]], labelTrain[:],validation_data=([pairTest[:, 0], pairTest[:, 1]], labelTest[:]),
