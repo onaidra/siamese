@@ -4,6 +4,7 @@ from siamese_network import build_siamese_model
 from utils import Generator
 import config
 import utils
+import tensorflow as tf
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense,Input,Lambda
 from tensorflow.keras.datasets import mnist
@@ -35,7 +36,7 @@ distance = Lambda(utils.euclidean_distance)([featsA, featsB])
 outputs = Dense(1, activation="sigmoid")(distance)
 pred = Dropout(0.2)(outputs)
 #model = Model(inputs=[imgA, imgB], outputs=pred)ù
-model = ResNet50(include_top=False, weights='imagenet', input_tensor=(imgA, imgB), pooling=max)
+model = ResNet50(include_top=False, weights='imagenet', input_tensor=tf.concat([imgA, imgB],1), pooling=max)
 
 print("[INFO] compiling model...")
 model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
