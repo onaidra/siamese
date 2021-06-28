@@ -53,6 +53,8 @@ history = model.fit_generator(train_datagen,
     validation_steps=len(testX)//config.BATCH_SIZE,
     epochs=config.EPOCHS)
 """
+print(pairTest[:,0].shape)
+print("----------------------------------------------------------------------------------------------------------------------------------------------------------------")
 history = model.fit([pairTrain[:, 0], pairTrain[:, 1]], labelTrain[:],validation_data=([pairTest[:, 0], pairTest[:, 1]], labelTest[:]),
 	batch_size=config.BATCH_SIZE,epochs=config.EPOCHS)
 
