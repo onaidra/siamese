@@ -4,6 +4,13 @@ from tensorflow.keras.applications.resnet50 import ResNet50
 def build_siamese_model(inputShape,embeddingDim=48):
     # specify the inputs for the feature extractor network
     inputs = Input(inputShape)
+
+    x = ResNet50(include_top=False, weights='imagenet', input_tensor=inputs, pooling=max)
+
+    x.summary()
+
+    return x
+"""
 	# define the first set of CONV => RELU => POOL => DROPOUT layers
 	
     x = Conv2D(64, (2, 2), padding="same", activation="relu")(inputs)
@@ -35,7 +42,7 @@ def build_siamese_model(inputShape,embeddingDim=48):
     model.summary()
 
     return model
-
+"""
 """
     I1 = Input(inputShape)
     print("##########################################################################################")
