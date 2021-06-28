@@ -35,7 +35,7 @@ distance = Lambda(utils.euclidean_distance)([featsA, featsB])
 outputs = Dense(1, activation="sigmoid")(distance)
 pred = Dropout(0.2)(outputs)
 #model = Model(inputs=[imgA, imgB], outputs=pred)ù
-model = ResNet50(include_top=False, weights='imagenet', input_tensor=[imgA, imgB], pooling=max)
+model = ResNet50(include_top=False, weights='imagenet', input_tensor=(imgA, imgB), pooling=max)
 
 print("[INFO] compiling model...")
 model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
