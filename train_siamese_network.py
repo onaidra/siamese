@@ -7,6 +7,7 @@ import utils
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense,Input,Lambda
 from tensorflow.keras.datasets import mnist
+from tensorflow.keras.applications.resnet50 import ResNet50
 import numpy as np
 
 # load MNIST dataset and scale the pixel values to the range of [0, 1]
@@ -33,7 +34,8 @@ featsB = featureExtractor(imgB)
 distance = Lambda(utils.euclidean_distance)([featsA, featsB])
 outputs = Dense(1, activation="sigmoid")(distance)
 pred = Dropout(0.2)(outputs)
-model = Model(inputs=[imgA, imgB], outputs=pred)
+#model = Model(inputs=[imgA, imgB], outputs=pred)ù
+model = ResNet50(include_top=False, weights='imagenet', input_tensor=[imgA, imgB], pooling=max)
 
 print("[INFO] compiling model...")
 model.compile(loss="binary_crossentropy", optimizer="adam",	metrics=["accuracy"])
