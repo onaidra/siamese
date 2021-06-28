@@ -32,6 +32,8 @@ def build_siamese_model(inputShape,embeddingDim=48):
 	
     # return the model to the calling function
 	
+    model.summary()
+
     return model
 
 """
